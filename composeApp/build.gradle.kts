@@ -62,6 +62,7 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(compose.preview)
             implementation(compose.uiTooling)
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
@@ -99,6 +100,7 @@ android {
 dependencies {
     androidTestImplementation(libs.androidx.uitest.junit4)
     debugImplementation(libs.androidx.uitest.testManifest)
+    debugImplementation(compose.uiTooling)
 }
 
 room {
