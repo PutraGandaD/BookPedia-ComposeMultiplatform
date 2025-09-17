@@ -1,24 +1,24 @@
 package com.putragandad.bookpediacmp.book.data.mappers
 
-import com.putragandad.bookpediacmp.book.data.dto.SearchResponseDto
+import com.putragandad.bookpediacmp.book.data.dto.SearchedBookDto
 import com.putragandad.bookpediacmp.book.domain.Book
 
-fun SearchResponseDto.SearchedBookDto.toBook() : Book {
+fun SearchedBookDto.toBook() : Book {
     return Book(
-        id = key,
+        id = id,
         title = title,
-        imageUrl = if(mainCoverKey != null) {
-            "https://covers.openlibrary.org/b/olid/${mainCoverKey}-L.jpg"
+        imageUrl = if(coverKey != null) {
+            "https://covers.openlibrary.org/b/olid/${coverKey}-L.jpg"
         } else {
-            "https://covers.openlibrary.org/b/id/${alternativeCoverKey}-L.jpg"
+            "https://covers.openlibrary.org/b/id/${coverAlternativeKey}-L.jpg"
         },
-        authors = authorName ?: emptyList(),
+        authors = authorNames ?: emptyList(),
         description = null,
-        languages = language ?: emptyList(),
+        languages = languages ?: emptyList(),
         firstPublishYear = firstPublishYear.toString(),
-        averageRating = null,
-        ratingCount = null,
-        numPages = null,
-        numEditions = 1
+        averageRating = ratingsAverage,
+        ratingCount = ratingsCount,
+        numPages = numPagesMedian ,
+        numEditions = numEditions ?: 0
     )
 }

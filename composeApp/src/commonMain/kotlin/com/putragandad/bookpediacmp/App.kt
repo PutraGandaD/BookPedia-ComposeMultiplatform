@@ -3,17 +3,30 @@ package com.putragandad.bookpediacmp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.putragandad.bookpediacmp.book.data.network.KtorRemoteBookDataSource
+import com.putragandad.bookpediacmp.book.data.repository.DefaultBookRepository
 import com.putragandad.bookpediacmp.book.domain.Book
+import com.putragandad.bookpediacmp.book.domain.BookRepository
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListScreen
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListScreenRoot
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListState
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListViewModel
+import com.putragandad.bookpediacmp.core.data.HttpClientFactory
+import io.ktor.client.engine.HttpClientEngine
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun App() {
+fun App(engine: HttpClientEngine) {
     BookListScreenRoot(
-        viewModel = remember { BookListViewModel() },
+        viewModel = remember { BookListViewModel(
+            bookRepository = DefaultBookRepository(
+                remoteBookDataSource = KtorRemoteBookDataSource(
+                    httpClient = HttpClientFactory.create(
+                        engine
+                    )
+                )
+            )
+        ) },
         onBookClick = {
 
         }
