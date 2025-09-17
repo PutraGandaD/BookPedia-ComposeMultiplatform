@@ -4,6 +4,7 @@ import com.putragandad.bookpediacmp.book.data.network.KtorRemoteBookDataSource
 import com.putragandad.bookpediacmp.book.data.network.RemoteBookDataSource
 import com.putragandad.bookpediacmp.book.data.repository.DefaultBookRepository
 import com.putragandad.bookpediacmp.book.domain.BookRepository
+import com.putragandad.bookpediacmp.book.presentation.SelectedBookViewModel
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListViewModel
 import com.putragandad.bookpediacmp.core.data.HttpClientFactory
 import org.koin.core.module.Module
@@ -25,4 +26,5 @@ val sharedModule = module {
 
     // provide viewmodel with needed constructor
     viewModelOf(::BookListViewModel)
+    viewModelOf(::SelectedBookViewModel)
 }

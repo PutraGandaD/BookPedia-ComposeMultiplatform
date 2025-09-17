@@ -6,10 +6,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -20,6 +26,7 @@ import com.putragandad.bookpediacmp.book.data.network.KtorRemoteBookDataSource
 import com.putragandad.bookpediacmp.book.data.repository.DefaultBookRepository
 import com.putragandad.bookpediacmp.book.domain.Book
 import com.putragandad.bookpediacmp.book.domain.BookRepository
+import com.putragandad.bookpediacmp.book.presentation.SelectedBookViewModel
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListScreen
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListScreenRoot
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListState
@@ -43,10 +50,20 @@ fun App() {
             ) {
                 composable<Routes.BookList> {
                     val viewModel = koinViewModel<BookListViewModel>()
+                    val selectedBookViewModel =
+                        it.sharedKoinViewModel<SelectedBookViewModel>(navController)
+
+                    // reset the shared view model state
+                    // when this screen reappear (for example back from detail -> main)
+                    // using LaunchedEffect with key true
+                    LaunchedEffect(true) {
+                        selectedBookViewModel.onSelectBook(null)
+                    }
 
                     BookListScreenRoot(
                         viewModel = viewModel ,
                         onBookClick = { book ->
+                            selectedBookViewModel.onSelectBook(book)
                             navController.navigate(
                                 Routes.BookDetail(book.id)
                             )
@@ -54,8 +71,11 @@ fun App() {
                     )
                 }
 
-                composable<Routes.BookDetail> { entry ->
-                    val args = entry.toRoute<Routes.BookDetail>()
+                composable<Routes.BookDetail> {
+                    val selectedBookViewModel =
+                        it.sharedKoinViewModel<SelectedBookViewModel>(navController)
+
+                    val selectedBook by selectedBookViewModel.selectedBook.collectAsStateWithLifecycle()
 
                     Box(
                         modifier = Modifier
@@ -63,7 +83,7 @@ fun App() {
                             .background(Color.White),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Book detail screen. The id of book is ${args.id}")
+                        Text("Book detail screen. The id of book is ${selectedBook?.title}")
                     }
                 }
             }
@@ -98,5 +118,20 @@ fun PreviewMainApp() {
             onAction = {}
         )
     }
+}
+
+@Composable
+private inline fun <reified T: ViewModel> NavBackStackEntry.sharedKoinViewModel(
+    navController: NavController
+) : T {
+    val navGraphRoute = destination.parent?.route ?: return koinViewModel<T>()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+
+    return koinViewModel(
+        viewModelStoreOwner = parentEntry
+    )
+
 }
 
