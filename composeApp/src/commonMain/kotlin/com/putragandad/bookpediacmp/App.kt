@@ -14,19 +14,14 @@ import com.putragandad.bookpediacmp.book.presentation.book_list.BookListViewMode
 import com.putragandad.bookpediacmp.core.data.HttpClientFactory
 import io.ktor.client.engine.HttpClientEngine
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun App(engine: HttpClientEngine) {
+fun App() {
+    val viewModel = koinViewModel<BookListViewModel>()
+
     BookListScreenRoot(
-        viewModel = remember { BookListViewModel(
-            bookRepository = DefaultBookRepository(
-                remoteBookDataSource = KtorRemoteBookDataSource(
-                    httpClient = HttpClientFactory.create(
-                        engine
-                    )
-                )
-            )
-        ) },
+        viewModel = viewModel ,
         onBookClick = {
 
         }
