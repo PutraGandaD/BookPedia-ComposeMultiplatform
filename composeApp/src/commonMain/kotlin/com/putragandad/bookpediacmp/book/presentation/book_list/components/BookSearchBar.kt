@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import bookpedia.composeapp.generated.resources.Res
@@ -40,6 +41,8 @@ fun BookSearchBar(
     onImeSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+
     CompositionLocalProvider(
         LocalTextSelectionColors provides TextSelectionColors(
             handleColor = SandYellow,
@@ -70,6 +73,7 @@ fun BookSearchBar(
             keyboardActions = KeyboardActions(
                 onSearch = {
                     onImeSearch
+                    focusManager.clearFocus()
                 }
             ),
             keyboardOptions = KeyboardOptions(
