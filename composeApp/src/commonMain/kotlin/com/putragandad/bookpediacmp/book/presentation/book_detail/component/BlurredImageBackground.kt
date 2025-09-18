@@ -134,14 +134,14 @@ fun BlurredImageBackground(
             Spacer(modifier = Modifier.fillMaxHeight(0.15f))
             ElevatedCard(
                 modifier = Modifier
-                    .height(230.dp)
+                    .height(200.dp)
                     .aspectRatio(2 / 3f),
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = Color.Transparent
                 ),
                 elevation = CardDefaults.elevatedCardElevation(
-                    defaultElevation = 15.dp
+                    defaultElevation = 0.dp
                 )
             ) {
                 AnimatedContent(
@@ -156,8 +156,8 @@ fun BlurredImageBackground(
                                     else painterResource(Res.drawable.book_error_2),
                                     contentDescription = stringResource(Res.string.book_cover),
                                     modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(Color.Transparent),
+                                        .background(Color.Transparent)
+                                        .fillMaxSize(),
                                     contentScale = if(result.isSuccess) {
                                         ContentScale.Crop
                                     } else {
