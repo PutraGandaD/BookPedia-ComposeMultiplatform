@@ -27,6 +27,9 @@ import com.putragandad.bookpediacmp.book.data.repository.DefaultBookRepository
 import com.putragandad.bookpediacmp.book.domain.Book
 import com.putragandad.bookpediacmp.book.domain.BookRepository
 import com.putragandad.bookpediacmp.book.presentation.SelectedBookViewModel
+import com.putragandad.bookpediacmp.book.presentation.book_detail.BookDetailAction
+import com.putragandad.bookpediacmp.book.presentation.book_detail.BookDetailScreenRoot
+import com.putragandad.bookpediacmp.book.presentation.book_detail.BookDetailViewModel
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListScreen
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListScreenRoot
 import com.putragandad.bookpediacmp.book.presentation.book_list.BookListState
@@ -74,17 +77,21 @@ fun App() {
                 composable<Routes.BookDetail> {
                     val selectedBookViewModel =
                         it.sharedKoinViewModel<SelectedBookViewModel>(navController)
-
                     val selectedBook by selectedBookViewModel.selectedBook.collectAsStateWithLifecycle()
+                    val viewModel = koinViewModel<BookDetailViewModel>()
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Book detail screen. The id of book is ${selectedBook?.title}")
+                    LaunchedEffect(selectedBook) {
+                        selectedBook?.let {
+                            viewModel.onAction(BookDetailAction.OnSelectedBookChange(it))
+                        }
                     }
+
+                    BookDetailScreenRoot(
+                        viewModel = viewModel,
+                        onBackClick = {
+                            navController.navigateUp()
+                        }
+                    )
                 }
             }
         }

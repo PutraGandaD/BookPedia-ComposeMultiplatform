@@ -4,6 +4,7 @@
     <string name="close_hint">Clear search</string>
     <string name="search_result_tab_label">Search Result</string>
     <string name="favorites_tab_label">Favorites</string>
+
     <string name="no_search_results">Oops, there's no book based on your search query.</string>
     <string name="no_favorite_books">You haven't saved any favorite books yet.</string>
     <string name="disk_full_error">You haven't saved any favorite books yet.</string>
@@ -12,4 +13,14 @@
     <string name="no_internet_error">You haven't saved any favorite books yet.</string>
     <string name="too_many_requests_error">You haven't saved any favorite books yet.</string>
     <string name="serialization_error">You haven't saved any favorite books yet.</string>
+
+    <string name="go_back">Go back</string>
+    <string name="mark_as_favorite">Mark as favorite</string>
+    <string name="remove_from_favorite">Remove from favorite</string>
+    <string name="book_cover">Book cover</string>
+    <string name="rating">Rating</string>
+    <string name="pages">Pages</string>
+    <string name="languages">Languages</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="description unavailable">Description not available.</string>
 </resources>
