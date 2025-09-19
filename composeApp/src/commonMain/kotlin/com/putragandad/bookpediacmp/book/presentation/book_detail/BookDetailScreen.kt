@@ -177,24 +177,22 @@ private fun BookDetailScreen(
 
                 if(state.isLoading) {
                     CircularProgressIndicator()
+                } else {
+                    Text(
+                        text = if(state.book.description.isNullOrBlank()) {
+                            stringResource(Res.string.description_unavailable)
+                        } else {
+                            state.book.description
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Justify,
+                        color = if(state.book.description.isNullOrBlank()) {
+                            Color.Black.copy(alpha = 0.4f)
+                        } else Color.Black,
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                    )
                 }
-
-                Text(
-                    text = if(state.book.description.isNullOrBlank()) {
-                        stringResource(Res.string.description_unavailable)
-                    } else {
-                        state.book.description
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Justify,
-                    color = if(state.book.description.isNullOrBlank()) {
-                        Color.Black.copy(alpha = 0.4f)
-                    } else Color.Black,
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                )
-
-
             }
         }
     }

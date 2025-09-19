@@ -1,5 +1,6 @@
 package com.putragandad.bookpediacmp.book.data.network
 
+import com.putragandad.bookpediacmp.book.data.dto.BookWorkDto
 import com.putragandad.bookpediacmp.book.data.dto.SearchResponseDto
 import com.putragandad.bookpediacmp.core.data.safeCall
 import com.putragandad.bookpediacmp.core.domain.DataError
@@ -17,7 +18,7 @@ class KtorRemoteBookDataSource(
         query: String,
         resultLimit: Int?
     ) : Result<SearchResponseDto, DataError.Remote> {
-        return safeCall {
+        return safeCall<SearchResponseDto> {
             httpClient.get(
                 urlString = "$BASE_URL/search.json"
             ) {
@@ -29,4 +30,14 @@ class KtorRemoteBookDataSource(
             }
         }
     }
+
+    override suspend fun getBookDetails(bookWorkId: String): Result<BookWorkDto, DataError.Remote> {
+        return safeCall<BookWorkDto> {
+            httpClient.get(
+                urlString = "$BASE_URL/works/$bookWorkId.json"
+            )
+        }
+    }
+
+
 }
