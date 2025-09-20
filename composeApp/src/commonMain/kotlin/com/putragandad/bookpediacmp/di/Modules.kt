@@ -1,5 +1,8 @@
 package com.putragandad.bookpediacmp.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.putragandad.bookpediacmp.book.data.database.DatabaseFactory
+import com.putragandad.bookpediacmp.book.data.database.FavoriteBookDatabase
 import com.putragandad.bookpediacmp.book.data.network.KtorRemoteBookDataSource
 import com.putragandad.bookpediacmp.book.data.network.RemoteBookDataSource
 import com.putragandad.bookpediacmp.book.data.repository.DefaultBookRepository
@@ -20,6 +23,14 @@ expect val platformModule: Module
 
 val sharedModule = module {
     single { HttpClientFactory.create(get()) } // provide engine from platformModule above
+
+    single {
+        get<DatabaseFactory>().create()
+            .setDriver(BundledSQLiteDriver())
+            .build()
+    }
+
+    single { get<FavoriteBookDatabase>().favoriteBookDao }
 
     // bind interface (from domain layer) to actual implementation (from data layer)
     singleOf(::KtorRemoteBookDataSource).bind<RemoteBookDataSource>()

@@ -58,7 +58,7 @@ object BookWorkDtoSerializer : KSerializer<BookWorkDto> {
                             // Case 1: description is a JSON object -> map to DescriptionDto
                             element is JsonObject -> {
                                 jsonDecoder.json
-                                    .decodeFromJsonElement(DescriptionDto.serializer(), element)
+                                    .decodeFromJsonElement(BookDescriptionDto.serializer(), element)
                                     .value // only take the "value" which is string from the JSON object
                             }
                             // Case 2: description is just a raw string
